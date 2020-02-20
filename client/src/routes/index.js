@@ -7,8 +7,8 @@ Vue.use(VueRouter);
 
 // set up our routes
 const routes = [
-  { path: '/', component: Home },
-  { path: '/portfolio', component: Portfolio }
+  { path: '/', component: Home, name: 'home' },
+  { path: '/portfolio', component: Portfolio, name: 'portfolio' }
 ]
 
 // initialize VueRouter instance and export it
