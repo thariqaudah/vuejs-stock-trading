@@ -1,0 +1,34 @@
+<template>
+  <div id="stockPortfolio" class="card">
+      <div class="card-header text-white bg-primary">
+        <h5 class="card-title">STOCK_CODE</h5>
+        <p>(Avg Cost: 100 | Quantity: 50)</p>
+      </div>
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2">STOCK_NAME</h6>
+        <!-- Sell input field -->
+        <form>
+          <div class="form-group">
+            <label>Lot Amount</label>
+            <input type="number" class="form-control" placeholder="Quantity" min="0" v-model.number="quantity">
+          </div>
+        </form>
+        <button type="button" class="btn btn-danger">Sell</button>
+      </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'StockPortfolio',
+  data() {
+    return {
+      quantity: null
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
