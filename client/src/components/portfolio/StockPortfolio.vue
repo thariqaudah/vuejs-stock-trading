@@ -1,5 +1,6 @@
 <template>
-  <div id="stockPortfolio" class="card">
+  <div id="stockPortfolio" class="col-sm-6 col-md-4 mt-4">
+    <div class="card">
       <div class="card-header text-white bg-primary">
         <h5 class="card-title">STOCK_CODE</h5>
         <p>(Avg Cost: 100 | Quantity: 50)</p>
@@ -15,10 +16,12 @@
         </form>
         <button type="button" class="btn btn-danger">Sell</button>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'StockPortfolio',
   data() {

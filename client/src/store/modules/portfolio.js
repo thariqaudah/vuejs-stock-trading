@@ -5,7 +5,7 @@ const state = {
 
 const getters = {
   allPortfolio: (state, getters) => {
-    return state.allPortfolio.map(singlePortfolio => {
+    return state.portfolio.map(singlePortfolio => {
       const record = getters.allStocks.find(stock => stock.id === singlePortfolio.id);
       return {
         id: singlePortfolio.id,
