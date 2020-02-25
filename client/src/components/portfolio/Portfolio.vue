@@ -2,7 +2,7 @@
   <div id="portfolio">
     <div class="container">
       <div class="row">
-        <app-stock-portfolio></app-stock-portfolio>
+        <app-stock-portfolio :key="portfolio.id" v-for="portfolio in allPortfolio" :portfolio="portfolio"></app-stock-portfolio>
       </div>
     </div>
   </div>

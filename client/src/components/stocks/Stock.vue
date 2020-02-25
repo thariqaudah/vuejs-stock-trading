@@ -39,7 +39,6 @@ export default {
       }
       this.quantity = null;
       this.buyStock(order);
-      console.log(order);
       // this.$emit('done-alert', order);
     }
   },
