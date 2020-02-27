@@ -22,6 +22,9 @@ const getters = {
 const actions = {
   buyStock({ commit }, order) {
     commit('addPortfolio', order);
+  },
+  sellStock({commit}, order) {
+    commit('minusPortfolio', order);
   }
 }
 
@@ -39,8 +42,15 @@ const mutations = {
       })
     }
   },
-  minusPortfolio: (state) => {
-    state
+  minusPortfolio: (state, {stockId, stockQuantity}) => {
+    const record = state.portfolio.find(stock => stock.id === stockId);
+    console.log(record.quantity);
+    if(record) {
+      if(stockQuantity <= record.quantity) {
+        record.quantity -= stockQuantity;
+      }
+    }
+    console.log(record.quantity);
   }
 }
 
