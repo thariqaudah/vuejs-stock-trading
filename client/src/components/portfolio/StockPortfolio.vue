@@ -2,19 +2,21 @@
   <div id="stockPortfolio" class="col-sm-6 col-md-4 mt-4">
     <div class="card">
       <div class="card-header text-white bg-primary">
-        <h5 class="card-title">{{ portfolio.code }} <small>(Price: {{ portfolio.price }})</small></h5>
-        <p>(Avg Cost: {{ portfolio.cost }} | Quantity: {{ portfolio.quantity }})</p>
+        <h5 class="card-title">{{ portfolio.code }} <small>(Price: {{ portfolio.price | currency }})</small></h5>
+        <p>(Avg Cost: {{ portfolio.cost | filterNumber}} | Quantity: {{ portfolio.quantity }})</p>
       </div>
       <div class="card-body">
         <h6 class="card-subtitle mb-2">{{ portfolio.name }}</h6>
         <!-- Sell input field -->
         <form>
           <div class="form-group">
-            <label>Lot Amount</label>
-            <input type="number" class="form-control" placeholder="Quantity" min="0" v-model.number="quantity">
+            <label>Quantity Amount</label>
+            <input type="number" class="form-control" placeholder="Quantity" min="0" v-model.number="quantity" :class="{danger: insufficientQuantity}">
           </div>
+          <button type="button" class="btn btn-danger" @click="submitSell" :disabled="insufficientQuantity">
+            {{ insufficientQuantity ? 'Not enough quantity' : 'Sell'}}
+          </button>
         </form>
-        <button type="button" class="btn btn-danger" @click="submitSell">Sell</button>
       </div>
     </div>
   </div>
@@ -41,16 +43,28 @@ export default {
     submitSell() {
       const order = {
         stockId: this.portfolio.id,
-        stockQuantity: this.portfolio.quantity,
-        stockPrice: this.portfolio.price
+        stockPrice: this.portfolio.price,
+        stockQuantity: this.quantity
       }
-      this.quantity = null;
       this.sellStock(order);
+      this.quantity = null;
+    }
+  },
+  computed: {
+    insufficientQuantity() {
+      return this.portfolio.quantity < this.quantity;
+    }
+  },
+  filters: {
+    filterNumber(value) {
+      return 'Rp ' + value.toLocaleString('id-ID');
     }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+  .danger {
+    border: 1px solid red;
+  }
 </style>

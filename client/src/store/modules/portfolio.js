@@ -4,7 +4,7 @@ const state = {
 }
 
 const getters = {
-  allPortfolio: (state, getters) => {
+  allPortfolio(state, getters) {
     return state.portfolio.map(singlePortfolio => {
       const record = getters.allStocks.find(stock => stock.id === singlePortfolio.id);
       return {
@@ -16,6 +16,9 @@ const getters = {
         cost: singlePortfolio.cost
       }
     })
+  },
+  getFunds(state) {
+    return state.funds;
   }
 }
 
@@ -31,9 +34,10 @@ const actions = {
 const mutations = {
   addPortfolio: (state, {stockId, stockPrice, stockQuantity}) => {
     const record = state.portfolio.find(stock => stock.id === stockId);
-    if(record) {
+
+    if (record) {
+      record.cost = Math.round(((record.quantity * record.cost) + (stockQuantity * stockPrice)) / (record.quantity + stockQuantity));
       record.quantity += stockQuantity;
-      record.cost = ((record.quantity * record.cost) + (stockQuantity * stockPrice)) / (record.quantity + stockQuantity);
     } else {
       state.portfolio.push({
         id: stockId,
@@ -41,16 +45,25 @@ const mutations = {
         cost: stockPrice
       })
     }
+    // Decrease funds by buy value
+    state.funds -= stockPrice * stockQuantity;
   },
-  minusPortfolio: (state, {stockId, stockQuantity}) => {
-    const record = state.portfolio.find(stock => stock.id === stockId);
-    console.log(record.quantity);
+  minusPortfolio: (state, {stockId, stockPrice, stockQuantity}) => {
+    const record = state.portfolio.find(stock => stock.id == stockId);
+    
     if(record) {
-      if(stockQuantity <= record.quantity) {
+      if(record.quantity > stockQuantity) {
         record.quantity -= stockQuantity;
+      } else if(record.quantity == stockQuantity) {
+        state.portfolio.splice(state.portfolio.indexOf(record), 1);
       }
+      // Increase funds by sell value
+      state.funds += stockPrice * stockQuantity;
     }
-    console.log(record.quantity);
+  },
+  setPortfolio: (state, portfolio) => {
+    state.portfolio = portfolio.portfolio;
+    state.funds = portfolio.funds;
   }
 }
 

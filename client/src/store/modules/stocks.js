@@ -13,18 +13,19 @@ const actions = {
     commit('initStocks', stocks);
   },
   randomPrice({commit}) {
-    // const maxDecrease = Math.random() * -1 * 0.25
-    const maxIncrease = Math.floor(Math.random() * 1 * 10) / 100;
-    commit('randomizePrice', maxIncrease);
+    commit('randomizingPrice');
   }
 }
 
 const mutations = {
   initStocks: (state, stocks) => state.stocks = stocks,
-  randomizePrice: (state, amount) => {
-    return state.stocks.forEach(stock => {
-      return Math.round(stock.price * (1 + amount));
+  randomizingPrice: (state) => {
+    state.stocks.forEach(stock => {
+      stock.price = Math.round(stock.price * (1 + Math.random() - 0.5));
     })
+  },
+  setStocks: (state, stocks) => {
+    state.stocks = stocks;
   }
 }
 

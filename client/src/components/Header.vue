@@ -23,15 +23,18 @@
         <!-- Dropdown menu -->
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#" @click="randomPrice">End Day</a>
+            <span class="nav-link" style="color: white"><b>Funds: {{ funds | currency }}</b></span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="endDay">End Day</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Save & Load
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">  
-              <a class="dropdown-item" href="#">Save Data</a>
-              <a class="dropdown-item" href="#">Load Data</a>
+              <a class="dropdown-item" href="#" @click="saveData">Save Data</a>
+              <a class="dropdown-item" href="#" @click="loadData">Load Data</a>
             </div>
           </li>
         </ul>
@@ -41,11 +44,29 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'Header',
-  methods: mapActions(['randomPrice'])
+  computed: mapGetters({funds: 'getFunds', allStocks: 'allStocks', allPortfolio: 'allPortfolio'}),
+  methods: {
+    ...mapActions(['randomPrice', 'getData']),
+    endDay() {
+      this.randomPrice();
+    },
+    saveData() {
+      const currentData = {
+        funds: this.funds,
+        stocks: this.allStocks,
+        portfolio: this.allPortfolio
+      }
+      axios.put('https://stock-trading-app-39bd5.firebaseio.com/data.json', currentData)
+    },
+    loadData() {
+      this.getData();
+    }
+  }
 }
 </script>
 
